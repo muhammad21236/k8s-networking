@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  namespace: mern-ns
+spec:
+  selector:
+    matchLabels:
+      app/component: database
+  serviceName: mongodb-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app/name: mern-app
+        app/component: database
+    spec:
+      containers:
+      - name: mongodbcontainer
+        image: mongo:8.0.3
+        args: ["--bind_ip_all"]
+        ports:
+        - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-cred
+              key: MONGO_INITDB_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-cred
+              key: MONGO_INITDB_ROOT_PASSWORD
+        volumeMounts:
+        - name: mongodb-storage
+          mountPath: /data/db
+
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: hostpath
+      resources:
+        requests:
+          storage: 1Gi
