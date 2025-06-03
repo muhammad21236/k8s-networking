@@ -4,21 +4,21 @@ metadata:
   name: ingress-mern-service
   namespace: mern-ns
 spec:
+  ingressClassName: nginx
   rules:
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
-          service:
-            name: client-service
-            port: 
-              number: 80
-      - pathType: Prefix
-        path: "/api"
-        backend:
-          service:
-            name: backend-service
-            port: 
-              number: 5000
-
+    - http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: client-service
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: "/api"
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 5000
