@@ -1,5 +1,4 @@
 
-**K8S-NETWORKING**
 
 ```markdown
 # 📦 MERN Stack App with Kubernetes Deployment (Docker Desktop Node)
@@ -15,28 +14,18 @@ It demonstrates deploying a full-stack MERN app on Docker Desktop’s Kubernetes
 ```
 
 .
-
 ├── API-jokes/            # Backend Express API (Node.js)
-
 ├── react-client/         # Frontend React Application (Vite)
-
 ├── k8s/                  # Kubernetes deployment configurations
-
 │   ├── backend/
-
 │   ├── client/
-
 │   ├── database/
-
 │   ├── ingress/
-
 │   └── namespace/
-
 ├── .gitignore
-
 └── README.md
 
-```
+````
 
 ---
 
@@ -51,6 +40,18 @@ It demonstrates deploying a full-stack MERN app on Docker Desktop’s Kubernetes
 
 ---
 
+## 📡 K8s Networking Overview
+
+In this deployment:
+
+- Each **Pod** communicates inside a **Namespace (mern-ns)**.
+- **ClusterIP Services** expose Pods internally.
+- **NodePort Services** optionally expose services on a static port on each Node’s IP.
+- **Ingress Controller** and **Ingress Resource** route external HTTP(S) traffic to specific Services.
+- MongoDB runs via a **StatefulSet** with its own Service for stable networking.
+
+---
+
 ## 📊 Kubernetes Architecture Diagram
 
 ```mermaid
@@ -61,7 +62,7 @@ graph TD
     C --> E[API Backend Deployment + Service]
     C --> F[MongoDB StatefulSet + Service]
     F --> G[ConfigMap & Secret]
-```
+````
 
 ---
 
@@ -76,7 +77,7 @@ graph TD
 
 ### 2️⃣ Check Kubernetes is Running
 
-Ensure Kubernetes is enabled in Docker Desktop → Settings → Kubernetes → Enable Kubernetes.
+Ensure Kubernetes is enabled in Docker Desktop → Settings → Kubernetes → **Enable Kubernetes**.
 
 Then check:
 
@@ -124,13 +125,13 @@ kubectl apply -f k8s/client/
 kubectl apply -f k8s/ingress/
 ```
 
-**Note:** If using Docker Desktop, an Ingress Controller might not be pre-installed. You can deploy NGINX Ingress using:
+> **Note:** If using Docker Desktop, an Ingress Controller might not be pre-installed. Install NGINX Ingress with:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 ```
 
-Wait a few minutes, then check:
+Then verify it:
 
 ```bash
 kubectl get pods -n ingress-nginx
@@ -148,26 +149,24 @@ kubectl get all -n mern-ns
 
 ### 9️⃣ Access the Application
 
-If using a **NodePort** service:
+* If using a **NodePort** service:
 
-* Find your NodePort:
+  * Find your NodePort:
 
-```bash
-kubectl get svc -n mern-ns
-```
+    ```bash
+    kubectl get svc -n mern-ns
+    ```
 
-* Then access via:
+  * Access via:
 
-```
-http://localhost:<nodeport>
-```
+    ```
+    http://localhost:<nodeport>
+    ```
 
-**Or**
+* If using **Ingress with localhost.nip.io** or a custom domain:
 
-If using  **Ingress with `localhost.nip.io` or custom host** :
-
-* Add an entry in your local `hosts` file (optional)
-* Or use `localhost.nip.io` which resolves to 127.0.0.1 automatically.
+  * Add an entry in your local `hosts` file (optional)
+  * Or use `localhost.nip.io` which resolves to 127.0.0.1 automatically.
 
 Example:
 
@@ -179,8 +178,8 @@ http://mern-app.localhost.nip.io/
 
 ## 📂 Folder Details
 
-| Directory          | Description                                        |
-| :----------------- | :------------------------------------------------- |
+| Directory        | Description                                        |
+| :--------------- | :------------------------------------------------- |
 | `API-jokes/`     | Node.js Express API project with Docker support.   |
 | `react-client/`  | React frontend project using Vite + Nginx Docker.  |
 | `k8s/backend/`   | Backend deployment and service YAMLs.              |
@@ -193,10 +192,14 @@ http://mern-app.localhost.nip.io/
 
 ## 📌 License
 
-This project is open-source and available under the [MIT License](https://chatgpt.com/c/LICENSE).
+This project is open-source and available under the [MIT License](LICENSE).
 
 ---
 
 ## 🙌 Author
 
 **Muhammad**
+
+---
+
+
