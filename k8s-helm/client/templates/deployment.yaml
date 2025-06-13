@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app/component: {{ .Values.podLabels.component }}
+  template:
+    metadata:
+      labels:
+        app/name: {{ .Values.podLabels.name }}
+        app/component: {{ .Values.podLabels.component }}
+    spec:
+      containers:
+      - name: clientcontainer
+        image: {{ .Values.image.repository }}
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: {{ .Values.containerPort }}
